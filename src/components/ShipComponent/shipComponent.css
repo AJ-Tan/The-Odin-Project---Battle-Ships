@@ -1,0 +1,12 @@
+.ship-container {
+}
+
+.ship-draggable {
+  display: grid;
+  width: max-content;
+
+  > * {
+    border: 1px solid brown;
+    aspect-ratio: 1/1;
+  }
+}
