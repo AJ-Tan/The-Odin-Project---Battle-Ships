@@ -1,0 +1,24 @@
+.player-board {
+  margin: 10px;
+}
+
+.board-container {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+
+  margin-bottom: 1rem;
+}
+
+.boardCell {
+  background-color: gray;
+  border: 1px solid black;
+  aspect-ratio: 1/1;
+}
+
+.highlight--green {
+  background-color: green;
+}
+
+.highlight--red {
+  background-color: red;
+}
