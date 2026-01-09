@@ -4,9 +4,73 @@
 .ship-draggable {
   display: grid;
   width: max-content;
+  outline: 1px solid blue;
+  position: absolute;
+  z-index: 2;
+  user-select: none;
+}
 
-  > * {
-    border: 1px solid brown;
-    aspect-ratio: 1/1;
+.ship-draggable-display {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+
+  height: 100%;
+  width: 100%;
+  z-index: -2;
+  background-color: white;
+
+  container-type: size;
+}
+
+.horizontal .ship-draggable-display span {
+  font-size: 10cqw;
+}
+
+.vertical .ship-draggable-display span {
+  writing-mode: sideways-lr;
+  font-size: 10cqh;
+}
+
+[data-mode="placement"] .btn-ship-rotate {
+  display: block;
+}
+
+.ship-cell {
+  aspect-ratio: 1/1;
+  container-type: size;
+}
+
+.btn-ship-rotate {
+  display: none;
+  position: absolute;
+  width: 65cqw;
+  border: none;
+  background-color: transparent;
+  top: 5cqw;
+  left: 5cqw;
+  cursor: pointer;
+
+  svg {
+    width: 100%;
+    height: 100%;
+    fill: rgba(0, 128, 0, 0.75);
+    transition: fill 0.1s ease-in-out;
   }
+
+  &:hover {
+    svg {
+      fill: rgba(0, 128, 0, 1);
+    }
+  }
+}
+
+.ship-placement-bg {
+  display: grid;
+  width: max-content;
+  position: relative;
+  background-color: rgba(0, 0, 0, 0.2);
+  z-index: -2;
 }
