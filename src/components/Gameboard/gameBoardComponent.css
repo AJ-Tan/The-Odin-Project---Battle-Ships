@@ -1,24 +1,36 @@
 .player-board {
+  display: flex;
   margin: 10px;
+}
+
+.player-ships {
+  flex: 0 0 15rem;
+  display: flex;
+  flex-direction: column;
 }
 
 .board-container {
   display: grid;
   grid-template-columns: repeat(8, 1fr);
-
-  margin-bottom: 1rem;
+  width: 100%;
+  max-width: 40rem;
 }
 
-.boardCell {
-  background-color: gray;
-  border: 1px solid black;
+.board-cell {
+  background-image: url("https://images.pexels.com/photos/1435752/pexels-photo-1435752.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  border: 1px solid rgb(81, 199, 229);
   aspect-ratio: 1/1;
 }
 
 .highlight--green {
-  background-color: green;
+  background-blend-mode: darken;
+  background-color: rgba(0, 128, 0, 0.5);
 }
 
 .highlight--red {
-  background-color: red;
+  background-blend-mode: lighten;
+  background-color: rgba(255, 0, 0, 0.5);
 }
