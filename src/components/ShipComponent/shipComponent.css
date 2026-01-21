@@ -1,10 +1,12 @@
 .ship-container {
+  width: max-content;
+  border: 1px solid black;
 }
 
 .ship-draggable {
   display: grid;
   width: max-content;
-  outline: 1px solid blue;
+
   position: absolute;
   z-index: 2;
   user-select: none;
@@ -20,9 +22,17 @@
   height: 100%;
   width: 100%;
   z-index: -2;
-  background-color: white;
-
+  background-color: var(--ship-bg);
+  border: 1px solid var(--ship-border);
   container-type: size;
+}
+
+.game-area[data-mode="game"] .ship-draggable {
+  display: none;
+}
+
+.game-area[data-mode="game"] .ship-draggable.show {
+  display: grid;
 }
 
 .horizontal .ship-draggable-display span {
@@ -34,7 +44,7 @@
   font-size: 10cqh;
 }
 
-[data-mode="placement"] .btn-ship-rotate {
+[data-mode="placement"] .btn-ship-rotate.show {
   display: block;
 }
 
@@ -56,14 +66,15 @@
   svg {
     width: 100%;
     height: 100%;
-    fill: rgba(0, 128, 0, 0.75);
+    fill: var(--btn-primary);
     transition: fill 0.1s ease-in-out;
   }
 
   &:hover {
     svg {
-      fill: rgba(0, 128, 0, 1);
+      fill: var(--btn-primary-hover);
     }
+    background-color: transparent;
   }
 }
 
@@ -71,6 +82,6 @@
   display: grid;
   width: max-content;
   position: relative;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(255, 255, 255, 0.116);
   z-index: -2;
 }

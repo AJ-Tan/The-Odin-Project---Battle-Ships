@@ -5,7 +5,7 @@ export class Gameboard {
     this.board = this.#_generateBoard(boardSize);
     this.boardSize = boardSize;
     this.shipNodes = {};
-    this.allSunk = false;
+    this.targetHistory = [];
   }
 
   #_generateBoard(boardSize) {
@@ -62,15 +62,49 @@ export class Gameboard {
     return cycleNode;
   }
 
+  isAllShipInBoard() {
+    for (let key in this.shipNodes) {
+      if (this.shipNodes[key].nodes.length === 0) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
   isAllSunk() {
-    for (let i = 0; i < this.ships.length; i++) {
-      if (this.ships[i].sunk === false) return false;
+    for (let key in this.shipNodes) {
+      if (!this.shipNodes[key].ship.sunk) {
+        return false;
+      }
     }
 
     return true;
   }
 
   boardNodeArray() {
+    const nodeArr = [];
+    let prevStartNode = null;
+    let previousNode = null;
+    for (let y = 0; y < this.boardSize; y++) {
+      for (let x = 0; x < this.boardSize; x++) {
+        if (x === 0) {
+          const currentNode = prevStartNode ? prevStartNode.up : this.board;
+          nodeArr.push(currentNode);
+          prevStartNode = currentNode;
+          previousNode = currentNode;
+        } else {
+          const currentNode = previousNode?.right;
+          nodeArr.push(currentNode);
+          previousNode = currentNode;
+        }
+      }
+    }
+
+    return nodeArr;
+  }
+
+  boardNodeArrayRows() {
     const nodeArr = [];
     let prevStartNode = null;
     let rowArr;
@@ -101,6 +135,52 @@ class boardNode {
     this.left = null;
     this.right = null;
     this.ship = null;
-    this.htmlElement = null;
+  }
+
+  possibleMoves(exclude = "") {
+    const moves = [];
+    if (this.up) {
+      if (this.up.fogElement.dataset.targeted === "false" || exclude !== "up") {
+        moves.push({ node: this.up, direction: "up" });
+      }
+    }
+
+    if (this.down) {
+      if (
+        this.down.fogElement.dataset.targeted === "false" ||
+        exclude !== "down"
+      ) {
+        moves.push({
+          node: this.down,
+          direction: "down",
+        });
+      }
+    }
+
+    if (this.left) {
+      if (
+        this.left.fogElement.dataset.targeted === "false" ||
+        exclude !== "left"
+      ) {
+        moves.push({
+          node: this.left,
+          direction: "left",
+        });
+      }
+    }
+
+    if (this.right) {
+      if (
+        this.right.fogElement.dataset.targeted === "false" ||
+        exclude !== "right"
+      ) {
+        moves.push({
+          node: this.right,
+          direction: "right",
+        });
+      }
+    }
+
+    return moves;
   }
 }

@@ -1,0 +1,236 @@
+.game-canvas {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  &.show {
+    display: flex;
+  }
+}
+
+.game-area {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  width: 100%;
+  max-width: var(--max-width);
+
+  @media screen and (max-width: 925px) {
+    flex-direction: column;
+  }
+}
+
+.board-container {
+  flex-shrink: 0;
+  position: relative;
+  width: 100%;
+  max-width: 35rem;
+  /* width: 35rem; */
+  outline: 3px solid rgb(81, 199, 229);
+}
+
+.cell-container {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+}
+
+.fog-container {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  display: none;
+  grid-template-columns: repeat(8, 1fr);
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+}
+
+.board-cell,
+.fog-cell {
+  background-color: var(--grid-bg);
+  border: 1px solid var(--grid-line);
+  aspect-ratio: 1/1;
+}
+
+.fog-cell {
+  container-type: inline-size;
+
+  &.hit::after {
+    content: "X";
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+
+    background-color: rgba(255, 0, 0, 0.3);
+    color: rgb(255, 0, 0);
+
+    font-weight: bold;
+    font-size: 40cqw;
+  }
+
+  &.miss::after {
+    content: "⬤";
+    display: flex;
+    justify-content: center;
+    padding-block-start: 30cqw;
+
+    height: 100%;
+    width: 100%;
+
+    background-color: rgba(78, 78, 78, 0.3);
+    color: rgb(78, 78, 78);
+
+    font-weight: bold;
+    font-size: 30cqw;
+  }
+
+  &.ship-sunk {
+    background-image: none;
+    background-color: rgba(245, 0, 0, 0.2);
+    border: none;
+  }
+}
+
+.highlight--green {
+  background-blend-mode: darken;
+  background-color: rgba(0, 128, 0, 0.5);
+}
+
+.highlight--red {
+  background-blend-mode: lighten;
+  background-color: rgba(255, 0, 0, 0.5);
+}
+
+.player-board {
+  width: 100%;
+
+  &.hide {
+    display: none;
+  }
+}
+
+.board-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+  @media screen and (max-width: 925px) {
+    flex-direction: column;
+  }
+}
+
+.player-board-btns {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-block-start: 1rem;
+}
+
+.player-ships {
+  display: flex;
+  flex-direction: column;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.player-ships-container {
+  display: grid;
+
+  @media screen and (max-width: 925px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.player-name {
+  display: none;
+  text-align: center;
+  font-size: 2rem;
+  margin-block-end: 1rem;
+}
+
+.game-area[data-mode="game"],
+.game-area[data-mode="end"] {
+  & .fog-container {
+    display: grid;
+  }
+
+  & .player-name {
+    display: block;
+  }
+}
+
+.game-area[data-mode="end"] {
+  & .fog-cell:not(.ship-sunk) {
+    background-color: transparent;
+  }
+}
+
+.game-area[data-mode="placement"] .player-ships {
+  width: unset;
+  height: unset;
+  overflow: unset;
+  margin-block-end: 2rem;
+  @media screen and (min-width: 926px) {
+    margin-inline-end: 2rem;
+  }
+}
+
+.result-overlay {
+  position: absolute;
+  z-index: 3;
+  width: 100%;
+  height: 100%;
+  container-type: inline-size;
+
+  display: none;
+  justify-content: center;
+  align-items: center;
+
+  &.lose,
+  &.win {
+    background: rgba(10, 15, 25, 0.75);
+    display: flex;
+  }
+
+  &.lose::after {
+    content: "LOSE";
+    font-size: 10cqw;
+    font-weight: 700;
+    color: #ff4c4c;
+    letter-spacing: 0.4cqw;
+  }
+
+  &.win::after {
+    content: "WIN";
+    font-size: 10cqw;
+    font-weight: 700;
+    color: #00ff40;
+    letter-spacing: 0.4cqw;
+  }
+}
+
+.game-area[data-mode="game"][data-turn="player 1"]
+  .player-board:nth-child(1)
+  .result-overlay {
+  background: rgba(10, 15, 25, 0.3);
+  display: flex;
+}
+
+.game-area[data-mode="game"][data-turn="player 2"]
+  .player-board:nth-child(2)
+  .result-overlay {
+  background: rgba(10, 15, 25, 0.3);
+  display: flex;
+}
+
+.game-area[data-mode="game"][data-turn="player 2"]
+  .player-board:has(+ .player-board[data-player="computer"])
+  .result-overlay {
+  background: transparent;
+  display: flex;
+}

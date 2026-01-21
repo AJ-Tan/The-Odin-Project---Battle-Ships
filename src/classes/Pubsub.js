@@ -14,6 +14,10 @@ class Pubsub {
     if (!this.events[event]) return;
     this.events[event].forEach((cb) => cb(data));
   }
+
+  clear() {
+    this.events = {};
+  }
 }
 
 export const pubsub = new Pubsub();

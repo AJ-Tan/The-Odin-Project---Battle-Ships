@@ -15,7 +15,8 @@ export class Ship {
   }
 
   isSunk() {
-    if (this.numHit >= this.shipLen) {
+    const totalHit = this.length * this.width;
+    if (this.numHit >= totalHit) {
       this.sunk = true;
     }
     return this.sunk;

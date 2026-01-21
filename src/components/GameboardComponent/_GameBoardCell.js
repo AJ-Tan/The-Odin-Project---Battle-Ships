@@ -2,7 +2,7 @@ import { pubsub } from "../../classes/Pubsub";
 
 const generateBoardCell = (board) => {
   const fragment = document.createDocumentFragment();
-  board.boardNodeArray().forEach((boardRow) => {
+  board.boardNodeArrayRows().forEach((boardRow) => {
     boardRow.forEach((node) => {
       const cell = document.createElement("div");
       cell.classList.add("board-cell");
@@ -46,7 +46,6 @@ const dragFunction = (shipMainNode, board, ship, mode = true, drop = false) => {
   _clearDragShip(ship, board);
   shipDraggable.style.top = "unset";
   shipDraggable.style.left = "unset";
-
   let isValidDrop = false;
   if (shipMainNode) {
     let cycleNode = shipMainNode;
@@ -56,11 +55,11 @@ const dragFunction = (shipMainNode, board, ship, mode = true, drop = false) => {
         if (cycleNode) {
           if (mode) {
             cycleNode.cellElement.classList.add(
-              isValidDrop ? "highlight--green" : "highlight--red"
+              isValidDrop ? "highlight--green" : "highlight--red",
             );
           } else {
             cycleNode.cellElement.classList.remove(
-              isValidDrop ? "highlight--green" : "highlight--red"
+              isValidDrop ? "highlight--green" : "highlight--red",
             );
             if (drop && isValidDrop) {
               cycleNode.ship = ship;
@@ -79,13 +78,22 @@ const dragFunction = (shipMainNode, board, ship, mode = true, drop = false) => {
   }
 
   if (drop && isValidDrop && shipDraggable) {
-    shipDraggable.style.position = "absolute";
-    shipDraggable.style.top = `${shipMainNode.cellElement.offsetTop}px`;
-    shipDraggable.style.left = `${shipMainNode.cellElement.offsetLeft}px`;
+    const rect = shipMainNode.cellElement.getBoundingClientRect();
+
+    shipDraggable.style.top = `${rect.top + window.scrollY}px`;
+    shipDraggable.style.left = `${rect.left + window.scrollX}px`;
     window.addEventListener("resize", () => {
       if (shipMainNode.ship === null || shipMainNode.ship !== ship) return;
-      shipDraggable.style.top = `${shipMainNode.cellElement.offsetTop}px`;
-      shipDraggable.style.left = `${shipMainNode.cellElement.offsetLeft}px`;
+      const rect = shipMainNode.cellElement.getBoundingClientRect();
+      shipDraggable.style.top = `${rect.top + window.scrollY}px`;
+      shipDraggable.style.left = `${rect.left + window.scrollX}px`;
+    });
+
+    pubsub.subscribe("changedGameState", () => {
+      if (shipMainNode.ship === null || shipMainNode.ship !== ship) return;
+      const rect = shipMainNode.cellElement.getBoundingClientRect();
+      shipDraggable.style.top = `${rect.top + window.scrollY}px`;
+      shipDraggable.style.left = `${rect.left + window.scrollX}px`;
     });
   }
 
@@ -105,7 +113,7 @@ const _cellDragEvents = (cell, board) => {
     const { position, ship } = shipData;
     const shipMainNode = board.navigateNode(
       [+position[0], +position[1]],
-      e.currentTarget.boardNode
+      e.currentTarget.boardNode,
     );
     dragFunction(shipMainNode, board, ship);
   });
@@ -114,7 +122,7 @@ const _cellDragEvents = (cell, board) => {
     const { position, ship } = shipData;
     const shipMainNode = board.navigateNode(
       [+position[0], +position[1]],
-      e.currentTarget.boardNode
+      e.currentTarget.boardNode,
     );
     dragFunction(shipMainNode, board, ship, false);
   });
@@ -123,7 +131,7 @@ const _cellDragEvents = (cell, board) => {
     const { position, ship } = shipData;
     const shipMainNode = board.navigateNode(
       [+position[0], +position[1]],
-      e.currentTarget.boardNode
+      e.currentTarget.boardNode,
     );
 
     dragFunction(shipMainNode, board, ship, false, true);

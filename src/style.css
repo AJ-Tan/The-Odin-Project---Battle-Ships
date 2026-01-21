@@ -1,3 +1,111 @@
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  /* === Base UI === */
+  --bg-main: #0d1117; /* Page background */
+  --bg-panel: #161b22; /* Boards, cards */
+  --bg-panel-alt: #1f2933; /* Side panels / menus */
+
+  --text-primary: #e6edf3; /* Main text */
+  --text-secondary: #9ba3af; /* Labels, hints */
+  --text-muted: #6b7280; /* Disabled text */
+
+  /* === Grid / Board === */
+  --grid-bg: #0b1c2d; /* Ocean */
+  --grid-line: #1e3a5f; /* Grid borders */
+
+  /* === Ships === */
+  --ship-bg: #374151; /* Ship body */
+  --ship-border: #9ca3af; /* Ship outline */
+  --ship-hover: #4b5563; /* Placement hover */
+
+  /* === Attacks === */
+  --hit-bg: #dc2626; /* Hit cell */
+  --hit-glow: rgba(220, 38, 38, 0.7);
+
+  --miss-bg: #38bdf8; /* Miss cell */
+  --miss-glow: rgba(56, 189, 248, 0.6);
+
+  /* === Game States === */
+  --win-bg: rgba(34, 197, 94, 0.85);
+  --lose-bg: rgba(239, 68, 68, 0.85);
+
+  --overlay-text: #ffffff;
+
+  /* === Buttons === */
+  --btn-primary: #2563eb;
+  --btn-primary-hover: #1d4ed8;
+
+  --btn-danger: #dc2626;
+  --btn-danger-hover: #b91c1c;
+
+  /* === Effects === */
+  --focus-ring: rgba(59, 130, 246, 0.6);
+
+  --max-width: 80rem;
+}
+
 body {
+  background-color: var(--bg-main);
   font-family: Roboto, Verdana, sans-serif;
+  color: var(--text-primary);
+
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+button {
+  border: none;
+  color: var(--text-primary);
+  background-color: var(--btn-primary);
+  font: inherit;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding-block: 0.5rem;
+  font-size: clamp(1rem, calc(100vw * 0.05), 1.5rem);
+
+  &:hover {
+    background-color: var(--btn-primary-hover);
+  }
+}
+
+header {
+  padding-inline: 2rem;
+  padding-block-start: 2rem;
+}
+
+.header-container {
+  container-type: inline-size;
+}
+
+h1 {
+  font-size: clamp(2.5rem, 10cqw, 3rem);
+  text-align: center;
+  letter-spacing: clamp(1px, calc(10vw * 0.06), 3px);
+}
+
+main {
+  flex: 1;
+  padding-block-start: 1rem;
+  padding-inline: 2rem;
+}
+
+footer {
+  font-size: 1rem;
+  text-align: center;
+  padding-block: 1.5rem;
+}
+
+@media screen and (max-width: 500px) {
+  header,
+  main {
+    padding-inline: 1rem;
+  }
 }
